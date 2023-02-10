@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Buy Item {{ item.id }}</title>
     <script src="https://js.stripe.com/v3/"></script>
 </head>
+
 <body>
 <h1>{{ item.name }}</h1>
 <p>Description: {{ item.description }}</p>
 <p>Price: {{ item.price }}</p>
 <button id="buy-button">Buy</button>
-<button id="add-button">Add</button>
-
 </body>
-    <script type="text/javascript">
-        var stripe = Stripe('{{secret_key}}');
-        var buyButton = document.getElementById('buy-button');
-        buyButton.addEventListener('click', function () {
-            fetch("{% if item.pk != None %} {% url 'buy' item.pk %} {% endif %}",
-                {method: 'GET'})
-                .then(response => response.json())
-                .then(session => stripe.redirectToCheckout({sessionId: session.id}))
-        });
-    </script>
+
+<script type="text/javascript">
+    var stripe = Stripe('{{secret_key}}');
+    var buyButton = document.getElementById('buy-button');
+    buyButton.addEventListener('click', function () {
+        fetch("{% if item.pk != None %} {% url 'buy' item.pk %} {% endif %}",
+            {method: 'GET'})
+            .then(response => response.json())
+            .then(session => stripe.redirectToCheckout({sessionId: session.id}))
+    });
+</script>
 </html>

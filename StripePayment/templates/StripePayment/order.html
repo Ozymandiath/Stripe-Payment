@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+{% for order in orders %}
+    <h1>{{ order.item.name }}</h1>
+    <p>Description: {{ order.item.description }}</p>
+    <p>Price: {{ order.item.price }}</p>
+    <button id="delete-button-{{ order.id }}">Delete</button>
+
+    <script type="text/javascript">
+        var deleteButton = document.getElementById('delete-button-{{ order.id }}');
+        deleteButton.addEventListener("click", function () {
+            fetch("{% url 'delete' order.id %}",
+                {
+                    method: 'DELETE',
+                    headers: {"X-CSRFToken": '{{ csrf_token }}'},
+                })
+                .then(response => window.location.reload())
+        });
+    </script>
+{% endfor %}
+<hr>
+<button id="buy-button">Buy</button>
+
+
+</body>
+<script type="text/javascript">
+    var stripe = Stripe('{{secret_key}}');
+    var buyButton = document.getElementById('buy-button');
+
+    buyButton.addEventListener('click', function () {
+        fetch("{% url 'buy' %}",
+            {method: 'GET'})
+            .then(response => response.json())
+            .then(session => stripe.redirectToCheckout({sessionId: session.id}))
+    });
+
+</script>
+</html>
