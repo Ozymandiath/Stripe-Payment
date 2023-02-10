@@ -33,8 +33,8 @@ class BuyItemIDView(View):
                 {
                     # 'description': item_details.description,
                     'price_data': {
-                        'currency': 'usd',
-                        'unit_amount': item_details.price,
+                        'currency': 'rub',
+                        'unit_amount': item_details.price*100,
                         'product_data': {
                             'name': item_details.name,
                         },
