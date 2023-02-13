@@ -6,22 +6,25 @@
 </head>
 <body>
 {% for order in orders %}
-    <h1>{{ order.item.name }}</h1>
-    <p>Description: {{ order.item.description }}</p>
-    <p>Price: {{ order.item.price }}</p>
-    <button id="delete-button-{{ order.id }}">Delete</button>
+    {% for item in order.item.all %}
 
-    <script type="text/javascript">
-        var deleteButton = document.getElementById('delete-button-{{ order.id }}');
-        deleteButton.addEventListener("click", function () {
-            fetch("{% url 'delete' order.id %}",
-                {
-                    method: 'DELETE',
-                    headers: {"X-CSRFToken": '{{ csrf_token }}'},
-                })
-                .then(response => window.location.reload())
-        });
-    </script>
+        <h1>{{ item.name }}</h1>
+        <p>Description: {{ item.description }}</p>
+        <p>Price: {{ item.price }}</p>
+        <button id="delete-button-{{ order.id }}">Delete</button>
+
+        <script type="text/javascript">
+            var deleteButton = document.getElementById('delete-button-{{ order.id }}');
+            deleteButton.addEventListener("click", function () {
+                fetch("{% url 'delete' order.id %}",
+                    {
+                        method: 'DELETE',
+                        headers: {"X-CSRFToken": '{{ csrf_token }}'},
+                    })
+                    .then(response => window.location.reload())
+            });
+        </script>
+    {% endfor %}
 {% endfor %}
 <hr>
 <button id="buy-button">Buy</button>
