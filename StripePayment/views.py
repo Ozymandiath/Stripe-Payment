@@ -105,7 +105,11 @@ class OrderView(View):
 
 class DeleteItemView(View):
 
-    def delete(self, request, pk: int):
-        order = Order.objects.filter(pk=pk)
-        order.delete()
+    def delete(self, request, pk: int, pk1: int):
+        order = Order.objects.prefetch_related("item").get(pk=pk)
+        # c = list(order)
+        item_remove = order.item.get(pk=pk1)
+        order.item.remove(item_remove.id)
+        order.save()
+        # item.delete()
         return HttpResponse(200)

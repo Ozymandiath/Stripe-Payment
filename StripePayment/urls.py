@@ -7,5 +7,5 @@ urlpatterns = [
     path("buy/<int:pk>", BuyItemIDView.as_view(), name="buy"),
     path("item/<int:pk>", ItemView.as_view(), name="item"),
     path("order/", OrderView.as_view(), name="order_redirect"),
-    path("delete/<int:pk>", DeleteItemView.as_view(), name="delete"),
+    path("delete/<int:pk>/<int:pk1>", DeleteItemView.as_view(), name="delete"),
 ]
